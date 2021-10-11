@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<form method="POST">
+  {{form.hidden_tag()}}
+  {{form.words_a_day.label}}{{form.words_a_day()}}<br>
+  {{form.submit()}}
+</form>
+
+{% endblock %}

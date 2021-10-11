@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Today's Word List</h1>
+
+{% for key,value in todays_list.iterrows()  %}
+<li>{{value['Word']}}:{{value['Definition']}}</li>
+
+{% endfor %}
+
+
+{% endblock %}

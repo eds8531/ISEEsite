@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<div class="jumbotron">
+
+  {% if current_user.is_authenticated %}
+
+  <h1>Welcome to the Praxis ISEE page.</h1>
+  <h3>Menu Items:</h3>
+  <ol>
+    <li>Today's Card List: </li>
+    <a href="#"></a>
+    <li>Today's FC</li>
+    <a href="#"></a>
+    <li>Settings</li>
+    <a href="#"></a>
+  </ol>
+
+  {% else %}
+
+  <h1>Log in or register to start!</h1>
+
+  {% endif %}
+
+
+
+</div>
+
+
+
+{% endblock %}
