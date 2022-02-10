@@ -104,6 +104,12 @@ def todays_list():
     todays_list = current_user.todays_list(current_user.words_a_day)
     return render_template('Todays_list.html', todays_list = todays_list)
 
+@site_blueprint.route('/flash_cards')
+@login_required
+def flash_cards():
+    todays_list = current_user.todays_list(current_user.words_a_day)
+    return render_template('flash_cards.html', todays_list = todays_list)
+
 @app.route('/welcome')
 @login_required
 def welcome_user():

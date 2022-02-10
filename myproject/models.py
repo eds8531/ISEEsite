@@ -10,9 +10,7 @@ from myproject import db, login_manager
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import date, datetime
 import datetime
-
-
-
+import pickle
 
 
 @login_manager.user_loader
@@ -48,16 +46,19 @@ class Student(db.Model, UserMixin):
     def get_id(self):
         return self.user_id
 
+
+    #This function is broken. It isn't creating a new pickled wordlist.
     def start_wordlist(self):
-        df = pd.read_excel('/Users/ericschlosser/Desktop/TheHardWay/ISEEsite/myproject/ISEEWords1.xlsx', parse_dates = ['Date'])
-        wordlist = os.path.join(current_app.root_path, 'wordlists', 'df.pkl')
-        df.to_pickle(wordlist, compression = None)
+        df = pd.read_excel('myproject/ISEEWords1.xlsx', parse_dates = ['Date'])
+        wordlist_path = os.path.join(current_app.root_path, 'wordlists', str(self.username) + 'wordlist_pickle.pkl')
+        #wordlist_filename = str(self.username) + '_wordlist'
+        pickle.dump(df, open(wordlist_path, 'wb'))
         return wordlist
 
     def todays_list(self, words_a_day):
         #This line of code will need to change to import the user's word list.
-        #df = pd.read_pickle(current_app.root_path + 'wordlists/' + str(self.username) + '.pkl')
-        df = pd.read_pickle('/Users/ericschlosser/Desktop/TheHardWay/ISEEsite/myproject/wordlists/df.pkl')
+        df = pickle.load(open(current_app.root_path + '/wordlists/' + str(self.username) + 'wordlist_pickle.pkl', 'rb'))
+        #df = pd.read_pickle('myproject/wordlists/df.pkl')
         df['Date'] = pd.to_datetime(df['Date'])
         df['Date'] = df['Date'].dt.date
         df1 = df.dropna(subset = ['Date'])
@@ -76,6 +77,9 @@ class Student(db.Model, UserMixin):
             tdl = pd.concat(frames)
             tdl = tdl.sample(len(tdl))
             return tdl
+
+        todays_wordlist = os.path.join(current_app.root_path, 'wordlists', str(self.username), 'todays_df.pkl')
+        tdl.to_pickle(todays_wordlist, compression = None)
 
 
 
