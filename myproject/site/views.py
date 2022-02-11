@@ -57,6 +57,9 @@ def login():
             login_user(student, remember = True)
             flash('Log in successful')
 
+            #Ok. Here is where we want to instantiate todays_list. Fingers crossed.
+            current_user.todays_list_inst(current_user.words_a_day)
+
             # This is pretty cool.
             # It goes back and finds the page the user was looking for before
             # they logged in, retrieves is and sends the user there.
@@ -101,7 +104,7 @@ def logout():
 @site_blueprint.route('/todays_list')
 @login_required
 def todays_list():
-    todays_list = current_user.todays_list(current_user.words_a_day)
+    todays_list = current_user.todays_list()
     return render_template('Todays_list.html', todays_list = todays_list)
 
 @app.route('/welcome')

@@ -50,21 +50,28 @@ class Student(db.Model, UserMixin):
         return self.user_id
 
     def start_wordlist(self):
+        # I need to make each new wordlist unique to it's user.
         df = pd.read_excel('myproject/wordlists/ISEEWords1 3.xlsx', parse_dates = ['Date'])
-        wordlist = os.path.join(current_app.root_path, 'wordlists', 'df.pkl')
+        wordlist = os.path.join(current_app.root_path, 'wordlists', str(self.username) + 'df.pkl')
         df.to_pickle(wordlist, compression = None)
         return wordlist
 
-    def todays_list(self, words_a_day):
+    # I need to split the todays_list() function into a function that instantiates a list and one that calls the list the first function made.
+
+    #This is the list that instantiates todays_list at login.
+    def todays_list_inst(self, words_a_day):
         #This line of code will need to change to import the user's word list.
         #df = pd.read_pickle(current_app.root_path + 'wordlists/' + str(self.username) + '.pkl')
-        df = pd.read_pickle('myproject/wordlists/df.pkl')
+        df = pd.read_pickle(os.path.join(current_app.root_path, 'wordlists', str(self.username) + 'df.pkl'))
 
         #The next 4 lines should fix the datetime issues for now, but will probably have to be fixed later.
         #for i in df.index.values:
         #    if df.loc[i,'Date'] != np.nan:
         #        df.loc[i,'Date'] = pd.to_datetime(df.loc[i,'Date'])
         #        df.loc[i,'Date'] = df.loc[i,'Date'].dt.date
+
+        #Mov this line to start wordlist
+        df['Date'] = [np.nan] *499
         df1 = df.dropna(subset = ['Date'])
         #I'm worried this next line of code where I write datetime instead of date
         # will cause problems down the road, but for now I'm going with it.
@@ -73,14 +80,21 @@ class Student(db.Model, UserMixin):
         adtl_words = words_a_day - len(tdl)
         #print(df.iloc[5,2].isnull())
         if adtl_words <= 0:
-            return tdl[:words_a_day]
+            tdl =  tdl[:words_a_day]
 
-        if adtl_words > 0:
+        elif adtl_words > 0:
             df2 = df[df['Date'].isnull()].sample(adtl_words)
             frames = [df1,df2]
             tdl = pd.concat(frames)
             tdl = tdl.sample(len(tdl))
-            return tdl
+
+        wordlist = os.path.join(current_app.root_path, 'wordlists', str(self.username) + '_todays_list.pkl')
+        tdl.to_pickle(wordlist, compression = None)
+
+    # Here is the function that calls the list made by todays_list_inst().
+    def todays_list(self):
+        tdl = pd.read_pickle(os.path.join(current_app.root_path, 'wordlists', str(self.username) + '_todays_list.pkl'))
+        return tdl
 
 
 
