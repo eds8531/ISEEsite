@@ -107,6 +107,13 @@ def todays_list():
     todays_list = current_user.todays_list()
     return render_template('Todays_list.html', todays_list = todays_list)
 
+@site_blueprint.route('/flashcards')
+@login_required
+def flashcards():
+    #This is just a placeholder now. The cards don't do anything yet.
+    todays_list = current_user.todays_list()
+    return render_template('Flashcards.html', todays_list = todays_list)
+
 @app.route('/welcome')
 @login_required
 def welcome_user():

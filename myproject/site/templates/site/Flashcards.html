@@ -4,14 +4,14 @@
 
 <h1>Today's Flashcards</h1>
 
-<h3>You have {{todays_list.shape[1]}} flashcards left.</h3>
+<h3>You have {{todays_list.shape[0]}} flashcards left.</h3>
 
 <div class="card">
   <div class="card-header">
     Word
   </div>
   <div class="card-body">
-    <h5 class="card-title">word</h5>
+    <h5 class="card-title">Instructions/definition</h5>
   </div>
 </div>
 <div class="btn-group" role="group" aria-label="Basic mixed styles example">
@@ -20,7 +20,6 @@
   <button type="button" class="btn btn-success">Mastered</button>
 </div>
 
-{% endfor %}
 
 
 {% endblock %}
