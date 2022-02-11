@@ -1,14 +1,17 @@
 import pandas as pd
 import pickle
 import os
+import numpy as np
 
-df = pd.read_excel('/Users/ericschlosser/Desktop/TheHardWay/ISEEsite/ISEEsite/myproject/wordlists/ISEEWords1 3.xlsx', parse_dates = ['Date'])
-wordlist_path = os.path.join('/Users/ericschlosser/Desktop/TheHardWay/ISEEsite/ISEEsite/myproject/wordlists', 'twowordlist_pickle.pkl')
-#wordlist_filename = str(self.username) + '_wordlist'
-pickle.dump(df, open(wordlist_path, 'wb'))
 
+df = pd.read_pickle('/Users/ericschlosser/Desktop/TheHardWay/ISEEsite/ISEEsite/myproject/wordlists/df.pkl')
+print('Before the update')
 print(df.head())
+df['Date'] = [np.nan]*499
+wordlist = '/Users/ericschlosser/Desktop/TheHardWay/ISEEsite/ISEEsite/myproject/wordlists/df.pkl'
+df.to_pickle(wordlist, compression = None)
 
-df = pickle.load(open('/Users/ericschlosser/Desktop/TheHardWay/ISEEsite/ISEEsite/myproject/wordlists/twowordlist_pickle.pkl', 'rb'))
 
-print(df)
+
+print('We updated the pickle')
+print(df.head())
