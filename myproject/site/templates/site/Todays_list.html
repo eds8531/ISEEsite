@@ -4,10 +4,41 @@
 
 <h1>Today's Word List</h1>
 
-{% for key,value in todays_list.iterrows()  %}
-<li>{{value['Word']}}:{{value['Definition']}}</li>
+<div class="card">
+  <div class="card-body">
+    <p>text on top</p>
 
-{% endfor %}
+<table class="table table-striped">
+  <tr>
+
+      <th scope="col">Word</th>
+      <th scope="col">Definition</th>
+
+    </tr>
+
+
+
+
+  <tbody>
+    {% for key,value in todays_list.iterrows()  %}
+
+    <tr>
+      <th scope='col'>{{value['Word']}}</th>
+      <th scope='col'>{{value['Definition']}}</th>
+    </tr>
+    {% endfor %}
+
+
+  </div>
+</div>
+
+  </tbody>
+
+
+
+</table>
+
+
 
 
 {% endblock %}
