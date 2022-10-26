@@ -10,41 +10,38 @@ from flask_login import current_user
 
 site_blueprint = Blueprint('site', __name__, template_folder = 'templates/site')
 
-#@site_blueprint.route('/')
-#def index():
-#    return "<h1>Welcome to the Home Page!</h1>"
+@site_blueprint.route('/')
+def index():
+    return "<h1>Welcome to the Home Page!</h1>"
 
-# @site_blueprint.route('/register', methods = ['GET','POST'])
-# def register():
-#     form = RegistrationForm()
-#
-#     if form.validate_on_submit():
-#         email = form.email.data
-#         username = form.username.data
-#         password = form.password.data
-#         new_student = Student(email, username, password)
-#         db.session.add(new_student)
-#         db.session.commit()
-#
-#         return redirect(url_for('site.login'))
-#
-#     return render_template('register.html', form = form)
+@site_blueprint.route('/register', methods = ['GET','POST'])
+def register():
+    form = RegistrationForm()
+    if form.validate_on_submit():
+       email = form.email.data
+       username = form.username.data
+       password = form.password.data
+       new_student = Student(email, username, password)
+       db.session.add(new_student)
+       db.session.commit()
+       return redirect(url_for('site.login'))
+    return render_template('register.html', form = form)
 
 # There's a better way to do this todays_list function.
 # I could call the words directly from the dataframe in SQL.
 
 
-@site_blueprint.route('/register', methods = ['GET','POST'])
-def register():
-    form = RegistrationForm()
-
-    if form.validate_on_submit():
-        student = Student(email = form.email.data, username = form.username.data, password = form.password.data)
-        db.session.add(student)
-        db.session.commit()
-        flash("Thanks for registering!")
-        return redirect(url_for('site.login'))
-    return render_template('register.html', form=form)
+#@site_blueprint.route('/register', methods = ['GET','POST'])
+#def register():
+#    form = RegistrationForm()
+#
+#    if form.validate_on_submit():
+#        student = Student(email = form.email.data, username = form.username.data, password = form.password.data)
+#        db.session.add(student)
+#        db.session.commit()
+#        flash("Thanks for registering!")
+#        return redirect(url_for('site.login'))
+#    return render_template('register.html', form=form)
 
 @site_blueprint.route('/login', methods = ['GET','POST'])
 def login():
@@ -69,8 +66,10 @@ def login():
                 next = url_for('welcome_user')
 
             return redirect(next)
+            #return render_template('welcome_user.html')
 
     return render_template('login.html', form = form)
+    
 
 @site_blueprint.route('/welcome')
 @login_required
