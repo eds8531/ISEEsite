@@ -88,6 +88,8 @@ def fc():
 
         
     df.to_csv('isee_csv.csv', index=False)
+    print('You have finished today\'s flashcards.')
+    main()
 
 def main():
     print("\n\n\nFlashcards: Main Menu\n\n")

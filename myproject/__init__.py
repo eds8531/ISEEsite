@@ -3,6 +3,10 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
+import openai
+import config
+
+openai.api_key = config.api_key
 
 login_manager  = LoginManager()
 
@@ -26,3 +30,18 @@ app.register_blueprint(site_blueprint, url_prefix = '/site')
 login_manager.init_app(app)
 
 login_manager.login_view = 'login'
+
+def get_completion(prompt, model="gpt-3.5-turbo", temperature=0.6):
+    messages = [{"role": "user", "content": prompt}]
+    response = openai.ChatCompletion.create(
+        model=model,
+        messages=messages,
+        temperature=temperature, # this is the degree of randomness of the model's output
+    )
+    return response.choices[0].message["content"]
+
+def use_word(word):
+    prompt = f"""Use the word "{word}" as it appears in a short sentence.""".format(word.capitalize())
+    return get_completion(prompt)
+
+app.jinja_env.globals.update(use_word=use_word)
